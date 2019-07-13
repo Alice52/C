@@ -1,0 +1,21 @@
+一、P383 超级重要
+注意：注意：注意：关于引用（红色的）返回值如果是新创的，不可以引用；如果本来就存在的全局变量，可以引用（比如改变顺序）
+参数是引用。将参数声明为引用目的是为了提高效率。如果案值传递TIME对象，代码的功能相同，但引用传递速度更快，使用的内存少。
+然而返回值不能用引用。因为函数将创建一个新的YIME对象（SUm），来表示另外的两个TIME对象。返回对象（如代码所做那样）将创建对象副本，而调用函数可以使用它。然而，如果返回类型为TIME&，则引用对象将是sum。但由于sum是局部变量，在函数结束后被删除，因此引用指向一个不存在的对象。使用返回类型TIME意味着程序再删除sum之前构造他的拷贝，调用函数将使用该拷贝。
+1.1
+const Time Time::Sum(const Time & t) const
+{
+    Time sum;
+    sum.minutes = minutes + t.minutes;
+    sum.hours = hours + t.hours + sum.minutes / 60;
+    sum.minutes %= 60;
+    return sum;
+}
+1.2.
+const Stock & Stock::topval(const Stock & s) const
+{
+    if (s.total_val > total_val)
+        return s;
+    else
+        return *this; 
+}

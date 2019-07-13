@@ -1,11 +1,20 @@
 # Prerequisites
 *.d
+bin/
+obj/
 
-# Object files
+# Compiled Object files
+*.slo
+*.lo
 *.o
-*.ko
 *.obj
+.vs/
+.vscode/
 *.elf
+
+# Fortran module files
+*.mod
+*.smod
 
 # Linker output
 *.ilk
@@ -20,6 +29,7 @@
 *.lib
 *.a
 *.la
+*.lai
 *.lo
 
 # Shared objects (inc. Windows DLLs)

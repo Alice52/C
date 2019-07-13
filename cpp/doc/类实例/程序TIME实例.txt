@@ -1,0 +1,268 @@
+原先的
+// mytime0.h -- Time class before operator overloading
+#ifndef MYTIME0_H_
+#define MYTIME0_H_
+
+class Time
+{
+private:
+    int hours;
+    int minutes;
+public:
+    Time();
+    Time(int h, int m = 0);
+    void AddMin(int m);
+    void AddHr(int h);
+    void Reset(int h = 0, int m = 0);
+    const Time Sum(const Time & t) const;
+    void Show() const;
+};
+#endif
+
+// mytime0.cpp  -- implementing Time methods
+#include <iostream>
+#include "mytime0.h"
+
+Time::Time()
+{
+    hours = minutes = 0;
+}
+
+Time::Time(int h, int m )
+{
+    hours = h;
+    minutes = m;
+}
+
+void Time::AddMin(int m)
+{
+    minutes += m;
+    hours += minutes / 60;
+    minutes %= 60;
+}
+
+void Time::AddHr(int h)
+{
+    hours += h;
+}
+
+void Time::Reset(int h, int m)
+{
+    hours = h;
+    minutes = m;
+}
+
+const Time Time::Sum(const Time & t) const
+{
+    Time sum;
+    sum.minutes = minutes + t.minutes;
+    sum.hours = hours + t.hours + sum.minutes / 60;
+    sum.minutes %= 60;
+    return sum;
+}
+
+void Time::Show() const
+{
+    std::cout << hours << " hours, " << minutes << " minutes";
+}
+// usetime0.cpp -- using the first draft of the Time class
+// compile usetime0.cpp and mytime0.cpp together
+#include <iostream>
+#include "mytime0.h"
+
+int main()
+{
+    using std::cout;
+    using std::endl;
+    Time planning;
+    Time coding(2, 40);
+    Time fixing(5, 55);
+    Time total;
+
+    cout << "planning time = ";
+    planning.Show();
+    cout << endl;
+ 
+    cout << "coding time = ";
+    coding.Show();
+    cout << endl;
+    
+    cout << "fixing time = ";
+    fixing.Show();
+    cout << endl;
+
+    total = coding.Sum(fixing);
+    cout << "coding.Sum(fixing) = ";
+  	total.Show();
+    cout << endl;
+    // std::cin.get();
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+友元函数
+
+// mytime3.h -- Time class with friends
+#ifndef MYTIME3_H_
+#define MYTIME3_H_
+#include <iostream>
+
+class Time
+{
+private:
+    int hours;
+    int minutes;
+public:
+    Time();
+    Time(int h, int m = 0);
+    void AddMin(int m);
+    void AddHr(int h);
+    void Reset(int h = 0, int m = 0);
+    Time operator+(const Time & t) const;
+    Time operator-(const Time & t) const;
+    Time operator*(double n) const;
+    friend Time operator*(double m, const Time & t)
+        { return t * m; }   // inline definition
+    friend std::ostream & operator<<(std::ostream & os, const Time & t);
+
+};
+#endif
+
+
+
+
+// mytime3.cpp  -- implementing Time methods
+#include "mytime3.h"
+
+Time::Time()
+{
+    hours = minutes = 0;
+}
+
+Time::Time(int h, int m )
+{
+    hours = h;
+    minutes = m;
+}
+
+void Time::AddMin(int m)
+{
+    minutes += m;
+    hours += minutes / 60;
+    minutes %= 60;
+}
+
+void Time::AddHr(int h)
+{
+    hours += h;
+}
+
+void Time::Reset(int h, int m)
+{
+    hours = h;
+    minutes = m;
+}
+
+Time Time::operator+(const Time & t) const
+{
+    Time sum;
+    sum.minutes = minutes + t.minutes;
+    sum.hours = hours + t.hours + sum.minutes / 60;
+    sum.minutes %= 60;
+    return sum;
+}
+
+Time Time::operator-(const Time & t) const
+{
+    Time diff;
+    int tot1, tot2;
+    tot1 = t.minutes + 60 * t.hours;
+    tot2 = minutes + 60 * hours;
+    diff.minutes = (tot2 - tot1) % 60;
+    diff.hours = (tot2 - tot1) / 60;
+    return diff;
+}
+
+Time Time::operator*(double mult) const
+{
+    Time result;
+    long totalminutes = hours * mult * 60 + minutes * mult;
+    result.hours = totalminutes / 60;
+    result.minutes = totalminutes % 60;
+    return result;
+}
+
+std::ostream & operator<<(std::ostream & os, const Time & t)
+{
+    os << t.hours << " hours, " << t.minutes << " minutes";
+    return os; 
+}
+//usetime3.cpp -- using the fourth draft of the Time class
+// compile usetime3.cpp and mytime3.cpp together
+#include <iostream>
+#include "mytime3.h"
+
+int main()
+{
+    using std::cout;
+    using std::endl;
+    Time aida(3, 35);
+    Time tosca(2, 48);
+    Time temp;
+
+    cout << "Aida and Tosca:\n";
+    cout << aida<<"; " << tosca << endl;
+    temp = aida + tosca;     // operator+()
+    cout << "Aida + Tosca: " << temp << endl;
+    temp = aida* 1.17;  // member operator*()
+    cout << "Aida * 1.17: " << temp << endl;
+    cout << "10.0 * Tosca: " << 10.0 * tosca << endl;
+	// std::cin.get();
+    return 0; 
+}
