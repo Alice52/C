@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <!-- hangfire -->
+  <PackageReference Include="Hangfire.Core" Version="1.7.0" />
+  <PackageReference Include="Hangfire.SqlServer" Version="1.7.0" />
+  <PackageReference Include="Hangfire.AspNetCore" Version="1.7.0" />
+
+</Project>
