@@ -27,6 +27,8 @@ namespace AspEfCore.Data.Models
             {
                 optionsBuilder.UseSqlServer("name=demo");
             }
+
+            // optionsBuilder.UseSqlServer("Server=192.168.111.75;Database=Migration_PM;User Id=sa; Password=sa");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
