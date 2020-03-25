@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Web;
 
-namespace ouath.sample
+namespace sample.ouath
 {
     public class Program
     {
@@ -34,7 +34,7 @@ namespace ouath.sample
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseUrls("http://192.168.111.75:8005")
+                .UseUrls("http://localhost:8005")
                 .UseDefaultServiceProvider(options => { options.ValidateScopes = false; })
                 .CaptureStartupErrors(true)
                 .UseStartup<Startup>()

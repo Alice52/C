@@ -1,9 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <RootNamespace>ouath_sample</RootNamespace>
+    <RootNamespace>sample.ouath</RootNamespace>
+    <StartupObject>sample.ouath.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,7 +1,10 @@
 ﻿using System;
 using Edu.Ntu.Foundation.Core.Configurations;
+using Edu.Ntu.Foundation.Core.Constants;
 using Edu.Ntu.Foundation.Core.Extensions;
 using Edu.Ntu.Foundation.Core.Filters;
+using Edu.Ntu.Foundation.Core.Models;
+using Edu.Ntu.Foundation.Core.Utils;
 using Edu.Ntu.Oauth.Clients;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -13,10 +16,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using sample.ouath.Services;
 using RestSharp;
 using Swashbuckle.AspNetCore.Swagger;
 
-namespace ouath.sample
+namespace sample.ouath
 {
     public class Startup
     {
@@ -33,7 +37,6 @@ namespace ouath.sample
             Configuration = configuration;
             SwaggerConfig = new SwaggerConfig();
             Configuration.GetSection("SwaggerConfig").Bind(SwaggerConfig);
-
             JwtBearerConfig = new JwtBearerConfig();
             Configuration.GetSection("JwtBearerConfig").Bind(JwtBearerConfig);
         }
@@ -48,6 +51,7 @@ namespace ouath.sample
                 InjectConfigs(services);
                 InjectServices(services);
                 InjectClients(services);
+                InjectNamedClients(services);
                 ConfigureAuthentication(services);
                 services.AddMvc(options =>
                     {
@@ -65,7 +69,7 @@ namespace ouath.sample
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Configure TableOperation.TableLifecycle Background Service failed.");
+                _logger.LogError(e, "Configure sample.ouath Background Service failed.");
             }
 
         }
@@ -88,20 +92,35 @@ namespace ouath.sample
                 {
                     app.UseSwagger().UseSwaggerUI(c =>
                     {
-                        c.SwaggerEndpoint("/swagger/v1/swagger.json", "TableOperation.TableLifecycle background API");
+                        c.SwaggerEndpoint("/swagger/v1/swagger.json", "sample.ouath background API");
                     });
                 }
                 app.UseStaticFiles();
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Start up TableOperation.TableLifecycle Background Service failed.");
+                _logger.LogError(e, "Start up sample.ouath Background Service failed.");
             }
         }
 
         private void InjectClients(IServiceCollection services)
         {
             services.AddTransient<IJwtTokenClient, JwtTokenClient>();
+        }
+
+        public void InjectNamedClients(IServiceCollection services)
+        {
+            services.AddHttpClient(ClientsConstants.TABLE_SERVICE_CLIENT, client =>
+            {
+                client.BaseAddress = new Uri("http://localhost:8005");
+                client.Timeout = TimeSpan.FromMilliseconds(1000);
+
+                var client2 = new RestClient("http://localhost:8005");
+                client2.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
+                var request = new RestRequest("/OauthService/GetAccessToken", Method.POST);
+                var jWTToken = JsonUtil.DeserializeObject<JwtTokenModel>(client2.Execute(request).Content);
+                client.DefaultRequestHeaders.Add(RequestHeaders.AUTHORIZATION, jWTToken.TokenType + RequestHeaders.WHITESPACE + jWTToken.AccessToken);
+            });
         }
 
 
@@ -111,7 +130,7 @@ namespace ouath.sample
             {
                 options.SwaggerDoc("v1", new Info
                 {
-                    Title = "TableOperation.TableLifecycle API",
+                    Title = "sample.ouath API",
                     Version = "v1"
                 });
             });
@@ -119,12 +138,13 @@ namespace ouath.sample
 
         private void InjectConfigs(IServiceCollection services)
         {
+            JwtConfiguration = Configuration.GetSection("JwtConfiguration");
             services.Configure<JwtConfiguration>(Configuration.GetSection("JwtConfiguration"));
         }
 
         private void InjectServices(IServiceCollection services)
         {
-
+            services.AddTransient<IOauthService, OauthService>();
         }
 
         private void ConfigureAuthentication(IServiceCollection services)

@@ -4,7 +4,7 @@
 
 2. init sln: `dotnet new sln`
 
-3. add project to sln: `dotnet sln add ouath.sample/ouath.sample.csproj`
+3. add project to sln: `dotnet sln add sample.ouath/sample.ouath.csproj`
 
 ---
 
@@ -19,8 +19,8 @@
 2. multi envs config
 
 3. data source sample
-    
-    - code first
+
+   - code first
 
 4. config read sample
 
