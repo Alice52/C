@@ -36,17 +36,16 @@ namespace Augmentum.sample.ouath.Controllers
 
         [HttpPost()]
         [Authorize]
-        public string NeedTokenAPI()
+        public void GetAccessToken2()
         {
-            return "Token valid";
-
+            Console.WriteLine("This is aauthorize method.");
         }
 
         [HttpGet()]
-        public string ValidateToken()
+        public void ValidateToken()
         {
-            return HttpUtil.Post<string>(_clientFactory, ClientsConstants.TABLE_SERVICE_CLIENT
-                    , null, "OauthService/NeedTokenAPI");
+            HttpUtil.Post<JwtTokenModel>(_clientFactory, ClientsConstants.TABLE_SERVICE_CLIENT
+                    , null, "OauthService/GetAccessToken2");
         }
     }
 }
