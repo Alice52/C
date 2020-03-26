@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Web;
 
-namespace sample.ouath
+namespace sample.oauth
 {
     public class Program
     {

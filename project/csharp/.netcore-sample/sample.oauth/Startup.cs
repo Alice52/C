@@ -16,11 +16,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using sample.ouath.Services;
+using sample.oauth.Services;
 using RestSharp;
 using Swashbuckle.AspNetCore.Swagger;
 
-namespace sample.ouath
+namespace sample.oauth
 {
     public class Startup
     {
@@ -71,7 +71,7 @@ namespace sample.ouath
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Configure sample.ouath Background Service failed.");
+                _logger.LogError(e, "Configure sample.oauth Background Service failed.");
             }
 
         }
@@ -94,14 +94,14 @@ namespace sample.ouath
                 {
                     app.UseSwagger().UseSwaggerUI(c =>
                     {
-                        c.SwaggerEndpoint("/swagger/v1/swagger.json", "sample.ouath background API");
+                        c.SwaggerEndpoint("/swagger/v1/swagger.json", "sample.oauth background API");
                     });
                 }
                 app.UseStaticFiles();
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Start up sample.ouath Background Service failed.");
+                _logger.LogError(e, "Start up sample.oauth Background Service failed.");
             }
         }
 
@@ -132,7 +132,7 @@ namespace sample.ouath
             {
                 options.SwaggerDoc("v1", new Info
                 {
-                    Title = "sample.ouath API",
+                    Title = "sample.oauth API",
                     Version = "v1"
                 });
             });

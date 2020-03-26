@@ -4,11 +4,11 @@ using Edu.Ntu.Foundation.Core.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using sample.ouath.Services;
+using sample.oauth.Services;
 using System;
 using System.Net.Http;
 
-namespace Augmentum.sample.ouath.Controllers
+namespace Augmentum.sample.oauth.Controllers
 {
     [Route("/[controller]/[action]")]
     [ApiController]

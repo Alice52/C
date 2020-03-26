@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <RootNamespace>sample.ouath</RootNamespace>
-    <StartupObject>sample.ouath.Program</StartupObject>
+    <RootNamespace>sample.oauth</RootNamespace>
+    <StartupObject>sample.oauth.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>

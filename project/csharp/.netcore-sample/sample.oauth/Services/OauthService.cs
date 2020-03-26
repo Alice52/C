@@ -6,7 +6,7 @@ using Edu.Ntu.Foundation.Core.Models;
 using Edu.Ntu.Oauth.Clients;
 using Microsoft.Extensions.Logging;
 
-namespace sample.ouath.Services
+namespace sample.oauth.Services
 {
     public class OauthService : IOauthService
     {

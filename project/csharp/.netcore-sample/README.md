@@ -4,7 +4,7 @@
 
 2. init sln: `dotnet new sln`
 
-3. add project to sln: `dotnet sln add sample.ouath/sample.ouath.csproj`
+3. add project to sln: `dotnet sln add sample.oauth/sample.oauth.csproj`
 
 ---
 
