@@ -24,6 +24,8 @@ namespace sample.ouath
 {
     public class Startup
     {
+        private const string HTTPS_SERVICE_URL = "https://localhost:44386/";
+        private const string HTTP_SERVICE_URL = "http://localhost:8005/";
         private const string jwksPath = "/oauth2/jwks";
         private readonly ILogger<Startup> _logger;
         public IConfiguration Configuration { get; }
@@ -112,10 +114,10 @@ namespace sample.ouath
         {
             services.AddHttpClient(ClientsConstants.TABLE_SERVICE_CLIENT, client =>
             {
-                client.BaseAddress = new Uri("http://localhost:8005");
+                client.BaseAddress = new Uri(HTTPS_SERVICE_URL);
                 client.Timeout = TimeSpan.FromMilliseconds(1000);
 
-                var client2 = new RestClient("http://localhost:8005");
+                var client2 = new RestClient(HTTPS_SERVICE_URL);
                 client2.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
                 var request = new RestRequest("/OauthService/GetAccessToken", Method.POST);
                 var jWTToken = JsonUtil.DeserializeObject<JwtTokenModel>(client2.Execute(request).Content);
