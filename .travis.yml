@@ -1,0 +1,37 @@
+git:
+  depth: 2
+
+services:
+  - docker
+
+branches:
+  only:
+    - develop
+    - feat-zack
+
+jobs:
+  include:
+    - stage: build-dotnet-project-sample
+      script:
+        # build project
+        - echo "build-dotnet-project-sample"
+        # push image
+        - image_tag=sample.oauth:`date +%Y%m%d`.${TRAVIS_COMMIT:0:7}
+        - cd $project_home/project/csharp/$dotnet_project_sample
+        - docker build -f sample.oauth/Dockerfile -t $image_tag .
+        - sudo docker login --username=$DOCKER_USERNAME --password=$DOCKER_PASSWORD $DOCKER_REPO
+        - sudo docker tag $image_tag $DOCKER_REPO/$aliyun_namespace/$image_tag
+        - sudo docker push $DOCKER_REPO/$aliyun_namespace/$image_tag
+
+notifications:
+  email:
+    recipients:
+      - zzhang_xz@163.com
+    on_success: always # default: change
+    on_failure: always # default: always
+env:
+  dotnet_project_sample: .netcore-sample
+  aliyun_namespace: csharp-dotnetcore
+  project_home: $PWD
+  commit_id: 000
+  image_tag: 000
